@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>관리자 | 포트폴리오</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="page admin">
+
+    <!-- 1. 로그인 화면 -->
+    <section class="sheet admin-box login-box" id="login-view" hidden>
+      <h1 class="big-title">ADMIN</h1>
+      <p class="intro">관리자 이메일과 비밀번호로 로그인해 주세요.</p>
+      <label class="field">
+        <span>이메일</span>
+        <input id="login-email" type="email" autocomplete="username">
+      </label>
+      <label class="field">
+        <span>비밀번호</span>
+        <input id="login-password" type="password" autocomplete="current-password">
+      </label>
+      <p class="msg error" id="login-msg" hidden></p>
+      <button type="button" class="btn primary wide" id="login-btn">로그인</button>
+      <p class="back-link"><a href="./">← 방문자 화면으로</a></p>
+    </section>
+
+    <!-- 2. 관리자가 아닐 때 -->
+    <section class="sheet admin-box login-box" id="denied-view" hidden>
+      <h1 class="big-title">ADMIN</h1>
+      <p class="headline">관리자만 쓸 수 있어요</p>
+      <p class="intro" id="denied-email"></p>
+      <button type="button" class="btn wide" data-logout>로그아웃</button>
+      <p class="back-link"><a href="./">← 방문자 화면으로</a></p>
+    </section>
+
+    <!-- 3. 관리자 화면 -->
+    <div id="admin-view" hidden>
+
+      <header class="sheet admin-box admin-top">
+        <h1 class="big-title">ADMIN</h1>
+        <div class="admin-top-right">
+          <span class="who" id="who"></span>
+          <a class="btn" href="./" target="_blank" rel="noopener">방문자 화면 보기</a>
+          <button type="button" class="btn" data-logout>로그아웃</button>
+        </div>
+      </header>
+
+      <!-- 프로필 -->
+      <section class="sheet admin-box">
+        <h2 class="section-title">프로필</h2>
+
+        <div class="photo-edit">
+          <div class="photo" id="p-photo-preview"></div>
+          <div>
+            <label class="btn file-btn">
+              사진 고르기
+              <input type="file" id="p-photo-file" accept="image/png,image/jpeg,image/webp,image/gif">
+            </label>
+            <button type="button" class="btn" id="p-photo-clear">사진 빼기</button>
+            <p class="hint">이미지(PNG·JPG·WEBP·GIF), 10MB까지. 고른 뒤 아래 "프로필 저장"을 눌러야 반영돼요.</p>
+            <p class="msg" id="p-photo-msg" hidden></p>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <label class="field"><span>이름</span><input id="p-name"></label>
+          <label class="field"><span>직함</span><input id="p-title"></label>
+          <label class="field"><span>경력 배지</span><input id="p-career_badge"></label>
+          <label class="field"><span>이메일</span><input id="p-email"></label>
+          <label class="field"><span>연락처</span><input id="p-phone"></label>
+          <label class="field"><span>위치</span><input id="p-location"></label>
+          <label class="field full"><span>한 줄 소개 제목 (이름이 들어가면 파란 밑줄)</span><input id="p-headline"></label>
+          <label class="field full"><span>소개 글</span><textarea id="p-intro" rows="4"></textarea></label>
+          <label class="field"><span>EDUCATION</span><textarea id="p-education" rows="4"></textarea></label>
+          <label class="field"><span>SKILLS &amp; TOOLS</span><textarea id="p-skills" rows="4"></textarea></label>
+          <label class="field"><span>EXPERIENCE</span><textarea id="p-experience" rows="4"></textarea></label>
+          <label class="field full"><span>맨 아래 인용</span><input id="p-quote"></label>
+        </div>
+
+        <div class="actions">
+          <p class="msg" id="p-msg" hidden></p>
+          <button type="button" class="btn primary" id="p-save">프로필 저장</button>
+        </div>
+      </section>
+
+      <!-- 포트폴리오 카드 -->
+      <section class="sheet admin-box">
+        <div class="section-head">
+          <h2 class="section-title">포트폴리오 카드</h2>
+          <button type="button" class="btn primary" id="proj-add">+ 카드 추가</button>
+        </div>
+
+        <!-- 추가·수정 폼 (평소엔 숨김) -->
+        <div class="edit-box" id="proj-form" hidden>
+          <h3 id="proj-form-title">카드 추가</h3>
+          <div class="form-grid">
+            <label class="field"><span>번호 (예: 01)</span><input id="f-number"></label>
+            <label class="field"><span>분류</span><input id="f-category"></label>
+            <label class="field full"><span>제목 (꼭 적기)</span><input id="f-title"></label>
+            <label class="field full"><span>설명</span><textarea id="f-description" rows="3"></textarea></label>
+            <label class="field full"><span>태그 (쉼표로 나눠 적기. 예: UI/UX 리드 기획, 총괄 PM)</span><input id="f-tags"></label>
+
+            <div class="field">
+              <span>썸네일 이미지</span>
+              <div class="thumb-preview browser"><div class="browser-bar"><i></i><i></i><i></i></div><div class="browser-view" id="f-thumb-preview"></div></div>
+              <div class="file-row">
+                <label class="btn file-btn">
+                  이미지 고르기
+                  <input type="file" id="f-thumb-file" accept="image/png,image/jpeg,image/webp,image/gif">
+                </label>
+                <button type="button" class="btn" id="f-thumb-clear">빼기</button>
+              </div>
+              <p class="msg" id="f-thumb-msg" hidden></p>
+            </div>
+
+            <div class="field">
+              <span>첨부 파일 (이미지 또는 PDF)</span>
+              <p class="file-now" id="f-file-now">없음</p>
+              <div class="file-row">
+                <label class="btn file-btn">
+                  파일 고르기
+                  <input type="file" id="f-file-file" accept="image/png,image/jpeg,image/webp,image/gif,application/pdf">
+                </label>
+                <button type="button" class="btn" id="f-file-clear">빼기</button>
+              </div>
+              <p class="msg" id="f-file-msg" hidden></p>
+            </div>
+
+            <p class="hint full">파일은 10MB까지. 고르면 바로 보관함에 올라가고, "카드 저장"을 눌러야 카드에 반영돼요.</p>
+          </div>
+
+          <div class="actions">
+            <p class="msg" id="f-msg" hidden></p>
+            <button type="button" class="btn" id="f-cancel">취소</button>
+            <button type="button" class="btn primary" id="f-save">카드 저장</button>
+          </div>
+        </div>
+
+        <ul class="admin-list" id="proj-list"><li class="empty">불러오는 중…</li></ul>
+      </section>
+
+      <!-- 좋아요 -->
+      <section class="sheet admin-box">
+        <h2 class="section-title">좋아요</h2>
+        <ul class="admin-list" id="like-list"><li class="empty">불러오는 중…</li></ul>
+      </section>
+
+      <!-- 방명록 -->
+      <section class="sheet admin-box">
+        <h2 class="section-title">방명록</h2>
+        <ul class="admin-list" id="gb-admin-list"><li class="empty">불러오는 중…</li></ul>
+      </section>
+    </div>
+
+  </main>
+
+  <script src="admin.js"></script>
+</body>
+</html>
